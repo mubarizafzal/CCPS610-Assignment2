@@ -7,7 +7,7 @@
     <script src="https://kit.fontawesome.com/dd15113c98.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     
-    <title>Employee Records</title>
+    <title>Create New Job</title>
 </head>
 <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
@@ -53,60 +53,48 @@
             </div>
         </div>
     </nav>
-    <h1 style="font-family:'Exo 2'; text-align: center;" style="margin-bottom: 85px;">Employee Records</h1>
+    <h1 style="font-family:'Exo 2'; text-align: center;" style="margin-bottom: 85px;">Job Description Records</h1>
     <div class="container mt-4" style="margin-bottom: 6%;">
         <table class="table table-dark table-bordered table-striped table-hover">
             <thead class="table-primary table-dark">
                 <tr>
-                    <th>employee_id</th>
-                    <th>first_name</th>
-                    <th>last_name</th>
-                    <th>email</th>
-                    <th>phone_number</th>
-                    <th>hire_date</th>
-                    <th>salary</th>
-                    <th>department_id</th>
                     <th>job_id</th>
                     <th>job_title</th>
+                    <th>min_salary</th>
+                    <th>max_salary</th>
                 </tr>
             </thead>
             <tbody>
                 <!--Add as many rows here as needed (THIS WILL BE DONE DYNAMICALLY VIA PHP)-->
                 <tr>
-                    <td>1</td>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>john.doe@example.com</td>
-                    <td>4161234567</td>
-                    <td>2023-07-23</td>
-                    <td>85000</td>
-                    <td>30</td>
                     <td>IT_ANA</td>
                     <td>Technology Analyst</td>
+                    <th>80000</th>
+                    <th>110000</th>
                 </tr>
             </tbody>
         </table>
     </div>
     <form class="container mb-4">
         <div class="col-md-12" style="margin-bottom: 30px;">
-            <label for="inputEmployeeId" class="form-label">Enter Employee ID</label>
-            <select id="inputEmployeeId" class="form-select">
+            <label for="inputJobID" class="form-label">Enter Job ID</label>
+            <select id="inputJobID" class="form-select">
               <option selected>Choose...</option>
               <!--MUST USE PHP To populate the options below-->
               <option>...</option>
             </select>
         </div>
         <div class="col-md-4" style="margin-bottom: 20px;">
-            <label for="inputPhone" class="form-label">Phone Number</label>
-            <input type="text" class="form-control" id="inputPhone" placeholder="1234567891">
+            <label for="inputJobTitle" class="form-label">Job Title</label>
+            <input type="text" class="form-control" id="inputJobTitle">
         </div>
         <div class="col-md-4" style="margin-bottom: 20px;">
-            <label for="inputEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="inputEmail" placeholder="john_doe@example.com">
+            <label for="inputMinSalary" class="form-label">Minimum Salary</label>
+            <input type="email" class="form-control" id="inputMinSalary" placeholder="85000">
         </div>
         <div class="col-md-4" style="margin-bottom: 20px;">
-            <label for="inputSalary" class="form-label">Salary</label>
-            <input type="text" class="form-control" id="inputSalary" placeholder="85000">
+            <label for="inputMaxSalary" class="form-label">Maximum Salary</label>
+            <input type="text" class="form-control" id="inputMaxSalary" placeholder="85000">
         </div>
 
         <div class="col-12" style="text-align: center;">
