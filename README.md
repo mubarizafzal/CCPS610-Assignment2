@@ -3,3 +3,5 @@
 Group project for CCPS610 - Database Systems II
 
 Group members: Ishika, Niloy, Mubariz
+
+Need PHP with OCI8, Nginx,
