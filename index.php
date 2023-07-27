@@ -10,12 +10,12 @@
 
     <title>CCPS610-HR Platform</title>
 </head>
-<body>
+<body style="overflow-x: hidden;">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <nav class="navbar navbar-expand-lg navbar-dark shadow p-3 mb-5" style="background-color: black;">
         <div class="container-fluid">
             <!-- Navbar Brand -->
-            <a class="navbar-brand" href="index.html" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
+            <a class="navbar-brand" href="index.php" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -27,8 +27,8 @@
                             Employee
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="employee-hiring-form.html">Employee Hiring Form</a></li>
-                            <li><a class="dropdown-item" href="employee-records.html">Update Employee Records</a></li>
+                            <li><a class="dropdown-item" href="employee-hiring-form.php">Employee Hiring Form</a></li>
+                            <li><a class="dropdown-item" href="employee-records.php">Update Employee Records</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -36,9 +36,9 @@
                             Jobs
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="identify-jd.html">Identify Job Description</a></li>
-                            <li><a class="dropdown-item" href="update-jd.html">Update Job Description</a></li>
-                            <li><a class="dropdown-item" href="new-job.html">Create New Job</a></li>
+                            <li><a class="dropdown-item" href="identify-jd.php">Identify Job Description</a></li>
+                            <li><a class="dropdown-item" href="update-jd.php">Update Job Description</a></li>
+                            <li><a class="dropdown-item" href="new-job.php">Create New Job</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -67,7 +67,7 @@
                 <div class="card-body">
                     <h5 class="card-title" style="color: blue;">Employees</h5>
                     <p class="card-text">View employee records and quickly update employee data.</p>
-                    <a href="employee-records.html" class="btn btn-primary" style="background-color: blue;">Update Employee Records</a>
+                    <a href="employee-records.php" class="btn btn-primary" style="background-color: blue;">Update Employee Records</a>
                 </div>
             </div>
             <div class="card" style="width: 18rem;">
@@ -75,7 +75,7 @@
                 <div class="card-body">
                     <h5 class="card-title" style="color: blue;">Jobs</h5>
                     <p class="card-text">View and update job descriptions, create new jobs!</p>
-                    <a href="new-job.html" class="btn btn-primary" style="background-color: blue;">Create New Job</a>
+                    <a href="new-job.php" class="btn btn-primary" style="background-color: blue;">Create New Job</a>
                 </div>
             </div>
             <div class="card" style="width: 18rem;">

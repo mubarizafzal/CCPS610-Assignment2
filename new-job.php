@@ -14,7 +14,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow p-3 mb-5" style="background-color: black;">
         <div class="container-fluid">
             <!-- Navbar Brand -->
-            <a class="navbar-brand" href="index.html" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
+            <a class="navbar-brand" href="index.php" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -26,8 +26,8 @@
                             Employee
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="employee-hiring-form.html">Employee Hiring Form</a></li>
-                            <li><a class="dropdown-item" href="employee-records.html">Update Employee Records</a></li>
+                            <li><a class="dropdown-item" href="employee-hiring-form.php">Employee Hiring Form</a></li>
+                            <li><a class="dropdown-item" href="employee-records.php">Update Employee Records</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -35,9 +35,9 @@
                             Jobs
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="identify-jd.html">Identify Job Description</a></li>
-                            <li><a class="dropdown-item" href="update-jd.html">Update Job Description</a></li>
-                            <li><a class="dropdown-item" href="new-job.html">Create New Job</a></li>
+                            <li><a class="dropdown-item" href="identify-jd.php">Identify Job Description</a></li>
+                            <li><a class="dropdown-item" href="update-jd.php">Update Job Description</a></li>
+                            <li><a class="dropdown-item" href="new-job.php">Create New Job</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -55,28 +55,46 @@
     </nav>
     <h1 style="font-family:'Exo 2'; text-align: center;" style="margin-bottom: 85px;">Create New Job</h1>
     <div class="container mb-4">
-        <form class="row g-3" style="margin-top: 30px;">
+        <form id="addJobForm" class="row g-3" style="margin-top: 30px;">
             <div class="col-md-6">
               <label for="inputJobID" class="form-label">Job ID</label>
-              <input type="email" class="form-control" id="inputJobID" placeholder="SA_REP">
+              <input name="jobID" class="form-control" id="inputJobID" placeholder="SA_REP">
             </div>
             <div class="col-md-6">
               <label for="inputTitle" class="form-label">Job Title</label>
-              <input type="password" class="form-control" id="inputTitle">
+              <input name="jobTitle" class="form-control" id="inputTitle">
             </div>
             <div class="col-12">
               <label for="inputMinimumSalary" class="form-label">Minimum Salary</label>
-              <input type="text" class="form-control" id="inputMinimumSalary" placeholder="85000">
+              <input type="text" name="minSal" class="form-control" id="inputMinimumSalary" placeholder="85000">
             </div>
             <div class="col-12">
                 <label for="inputMaximumSalary" class="form-label">Maximum Salary</label>
-                <input type="text" class="form-control" id="inputMaximumSalary" placeholder="85000">
+                <input type="text" name="maxSal" class="form-control" id="inputMaximumSalary" placeholder="85000">
             </div>
             <div class="col-12" style="text-align: center;">
                 <button type="submit" class="btn btn-outline-dark btn-lg">Create Job</button>
             </div>
         </form>
     </div>
+    <script src="jquery.min.js"></script>
+    <script>
+        $('#addJobForm').submit(function(e){
+          e.preventDefault();
+          var product = $(this).serialize();
+          console.log(product);
+
+          $.ajax({
+            type: 'POST',
+            url: 'add_job.php',
+            data: product,
+            dataType: 'json',
+            success: function(response){
+              console.log("success");
+            }
+          });
+        });
+    </script>
 </body>
 <hr style="border-style: dotted none none; border-width: 6px; width: 75px; margin: 50px auto; border-color: orangered; background-color: white; opacity: 1;">
 <footer style="background-color: black; color: white; padding: 20px; text-align: center;">

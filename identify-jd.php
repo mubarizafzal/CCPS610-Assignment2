@@ -1,3 +1,5 @@
+<?php include 'conn.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +17,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow p-3 mb-5" style="background-color: black;">
         <div class="container-fluid">
             <!-- Navbar Brand -->
-            <a class="navbar-brand" href="index.html" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
+            <a class="navbar-brand" href="index.php" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -27,8 +29,8 @@
                             Employee
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="employee-hiring-form.html">Employee Hiring Form</a></li>
-                            <li><a class="dropdown-item" href="employee-records.html">Update Employee Records</a></li>
+                            <li><a class="dropdown-item" href="employee-hiring-form.php">Employee Hiring Form</a></li>
+                            <li><a class="dropdown-item" href="employee-records.php">Update Employee Records</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -36,9 +38,9 @@
                             Jobs
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="identify-jd.html">Identify Job Description</a></li>
-                            <li><a class="dropdown-item" href="update-jd.html">Update Job Description</a></li>
-                            <li><a class="dropdown-item" href="new-job.html">Create New Job</a></li>
+                            <li><a class="dropdown-item" href="identify-jd.php">Identify Job Description</a></li>
+                            <li><a class="dropdown-item" href="update-jd.php">Update Job Description</a></li>
+                            <li><a class="dropdown-item" href="new-job.php">Create New Job</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -55,15 +57,53 @@
         </div>
     </nav>
     <h1 style="font-family:'Exo 2'; text-align: center;" style="margin-bottom: 85px;">Identify Job Description</h1>
-    <form class="container mt-4">
+    <?php
+      if ($_GET['inputJobTitle']) {
+        $jobID = $_GET['inputJobTitle'];
+        echo "<div class='container'>";
+        $stid = oci_parse($conn, 'SELECT get_job(:jobID) FROM dual');
+        oci_bind_by_name($stid, ":jobID", $jobID); 
+        oci_execute($stid);
+        while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+          echo "<b>Job Description: </b>";
+          foreach ($row as $item) {
+            echo $item;
+          }
+        }
+        echo "</div>";
+      }
+    ?>
+    <form id="getDescForm" class="container mt-4">
         <div class="mb-3">
             <label for="inputJobID" class="form-label">Enter Job ID</label>
-            <input type="text" class="form-control" id="inputJobID" placeholder="SA_REP">
+            <select id="inputJobTitle" class="form-select" name="inputJobTitle">
+              <option selected><?php
+                if (!empty($_GET["inputJobTitle"])) {
+                  echo $_GET["inputJobTitle"];
+                } else {
+                  echo "Choosing ...";
+                }
+              ?></option>
+                    <?php
+                      $stid = oci_parse($conn, 'SELECT job_id FROM hr_jobs');
+                      oci_execute($stid);
+                      while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                        echo "<option>";
+                        foreach ($row as $item) {
+                          echo $item . " ";
+                        }
+                        echo "</option>";
+                      }
+                    ?>
+            </select>
           </div>
           <div class="col-12" style="text-align: center;">
             <button type="submit" class="btn btn-outline-dark btn-lg">Submit</button>
         </div>
     </form>
+    <script src="jquery.min.js"></script>
+    <script>
+    </script>
 </body>
 <hr style="border-style: dotted none none; border-width: 6px; width: 75px; margin: 50px auto; border-color: orangered; background-color: white; opacity: 1;">
 <footer style="background-color: black; color: white; padding: 20px; text-align: center;">

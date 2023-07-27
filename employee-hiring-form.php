@@ -1,3 +1,5 @@
+<?php include 'conn.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow p-3 mb-5" style="background-color: black;">
         <div class="container-fluid">
             <!-- Navbar Brand -->
-            <a class="navbar-brand" href="index.html" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
+            <a class="navbar-brand" href="index.php" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -26,8 +28,8 @@
                             Employee
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="employee-hiring-form.html">Employee Hiring Form</a></li>
-                            <li><a class="dropdown-item" href="employee-records.html">Update Employee Records</a></li>
+                            <li><a class="dropdown-item" href="employee-hiring-form.php">Employee Hiring Form</a></li>
+                            <li><a class="dropdown-item" href="employee-records.php">Update Employee Records</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -35,9 +37,9 @@
                             Jobs
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="identify-jd.html">Identify Job Description</a></li>
-                            <li><a class="dropdown-item" href="update-jd.html">Update Job Description</a></li>
-                            <li><a class="dropdown-item" href="new-job.html">Create New Job</a></li>
+                            <li><a class="dropdown-item" href="identify-jd.php">Identify Job Description</a></li>
+                            <li><a class="dropdown-item" href="update-jd.php">Update Job Description</a></li>
+                            <li><a class="dropdown-item" href="new-job.php">Create New Job</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -57,69 +59,92 @@
     <h1 style="font-family:'Exo 2'; text-align: center; margin-bottom: 80px;">Employee Hiring Form</h1>
 
     <div class="container mb-4">
-        <form class="row g-3">
+        <form id="hiring-form" class="row g-3">
             <div class="col-md-6">
               <label for="inputFName4" class="form-label">First Name</label>
-              <input type="text" class="form-control" id="inputFName4">
+              <input type="text" class="form-control" id="inputFName4" name="inputFName">
             </div>
             <div class="col-md-6">
               <label for="inputLName4" class="form-label">Last Name</label>
-              <input type="text" class="form-control" id="inputLName4">
+              <input type="text" class="form-control" id="inputLName4" name="inputLName">
             </div>
             <div class="col-12">
               <label for="inputEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="inputEmail" placeholder="john_doe@example.com">
+              <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="john_doe@example.com">
             </div>
             <div class="col-12">
               <label for="inputPhone" class="form-label">Phone Number</label>
-              <input type="text" class="form-control" id="inputPhone" placeholder="1234567891">
+              <input type="text" class="form-control" id="inputPhone" name="inputPhone" placeholder="1234567891">
             </div>
             <div class="col-md-6">
               <label for="inputSalary" class="form-label">Salary</label>
-              <input type="text" class="form-control" id="inputSalary" placeholder="85000">
+              <input type="text" class="form-control" id="inputSalary" name="inputSalary" placeholder="85000">
             </div>
             <div class="col-md-6">
               <label for="inputHireDate" class="form-label">Hire-Date</label>
-              <input type="date" class="form-control" id="inputDate">
+              <input type="date" class="form-control" id="inputDate" name="inputDate">
             </div>
     
             <!-- The OPTIONS will be populated here (decide on manager names, department titles, manager titles)-->
             <div class="col-md-4" style="margin-top: 45px;">
                 <label for="inputJobTitle" class="form-label">Job Title</label>
-                <select id="inputJobTitle" class="form-select">
+                <select id="inputJobTitle" class="form-select" name="inputJobTitle">
                     <option selected>Choose...</option>
-                    <option>FI_ACCOUNT  Accountant</option>
-                    <option>SA_REP  Sales Representative</option>
-                    <option>SA_MAN  Sales Manager</option>
-                    <option>IT_ANA  Technology Analyst</option>
+                    <?php
+                      $stid = oci_parse($conn, 'SELECT job_id FROM hr_jobs');
+                      oci_execute($stid);
+                      while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                        echo "<option>";
+                        foreach ($row as $item) {
+                          echo $item . " ";
+                        }
+                        echo "</option>";
+                      }
+                    ?>
                 </select>
             </div>
             <div class="col-md-4" style="margin-top: 45px;">
-                <label for="inputManagerTitle" class="form-label">Manager Title</label>
-                <select id="inputManagerTitle" class="form-select">
+                <label for="inputManagerTitle" class="form-label">Manager ID</label>
+                <select id="inputManagerTitle" class="form-select" name="inputManagerTitle">
                     <option selected>Choose...</option>
-                    <option>103  Alexander Hunold</option>
-                    <option>108  Nancy Greenberg</option>
-                    <option>109  John Doe</option>
-                    <option>107  Trevor Burke</option>
+                    <?php
+                      $stid = oci_parse($conn, 'SELECT UNIQUE(manager_id) FROM hr_employees WHERE manager_id IS NOT NULL ORDER BY manager_id');
+                      oci_execute($stid);
+                      while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                        echo "<option>";
+                        foreach ($row as $item) {
+                          echo $item . " ";
+                        }
+                        echo "</option>";
+                      }
+                    ?>
                 </select>
             </div>
             <div class="col-md-4" style="margin-top: 45px;">
                 <label for="inputDepartmentTitle" class="form-label">Department Title</label>
-                <select id="inputDepartmentTitle" class="form-select">
+                <select id="inputDepartmentTitle" class="form-select" name="inputDepartmentTitle">
                     <option selected>Choose...</option>
-                    <option>10  Administration</option>
-                    <option>20  Marketing</option>
-                    <option>30  Information Technology</option>
+                    <?php
+                      $stid = oci_parse($conn, 'SELECT UNIQUE(department_id) FROM hr_employees WHERE department_id IS NOT NULL ORDER BY department_id');
+                      oci_execute($stid);
+                      while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                        echo "<option>";
+                        foreach ($row as $item) {
+                          echo $item . " ";
+                        }
+                        echo "</option>";
+                      }
+                    ?>
                 </select>
             </div>
             <div class="col-12" style="text-align: center;">
-              <button type="submit" class="btn btn-outline-dark btn-lg">Hiring</button>
+              <button type="submit" form="hiring-form" class="btn btn-outline-dark btn-lg">Hiring</button>
             </div>
         </form>
     </div>
 
     <!--JS for setting sysdate as default date-->
+    <script src="jquery.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('inputDate').value = new Date().toDateInputValue();
@@ -131,6 +156,22 @@
             const day = String(this.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`;
         };
+
+        $('#hiring-form').submit(function(e){
+          e.preventDefault();
+          var product = $(this).serialize();
+          console.log(product);
+
+          $.ajax({
+            type: 'POST',
+            url: 'hire_employee.php',
+            data: product,
+            dataType: 'json',
+            success: function(response){
+              console.log("success");
+            }
+          });
+        });
     </script>
 </body>
 <hr style="border-style: dotted none none; border-width: 6px; width: 75px; margin: 50px auto; border-color: orangered; background-color: white; opacity: 1;">

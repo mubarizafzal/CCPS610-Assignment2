@@ -1,3 +1,6 @@
+<?php include 'conn.php'; ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +17,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow p-3 mb-5" style="background-color: black;">
         <div class="container-fluid">
             <!-- Navbar Brand -->
-            <a class="navbar-brand" href="index.html" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
+            <a class="navbar-brand" href="index.php" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -26,8 +29,8 @@
                             Employee
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="employee-hiring-form.html">Employee Hiring Form</a></li>
-                            <li><a class="dropdown-item" href="employee-records.html">Update Employee Records</a></li>
+                            <li><a class="dropdown-item" href="employee-hiring-form.php">Employee Hiring Form</a></li>
+                            <li><a class="dropdown-item" href="employee-records.php">Update Employee Records</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -35,9 +38,9 @@
                             Jobs
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="identify-jd.html">Identify Job Description</a></li>
-                            <li><a class="dropdown-item" href="update-jd.html">Update Job Description</a></li>
-                            <li><a class="dropdown-item" href="new-job.html">Create New Job</a></li>
+                            <li><a class="dropdown-item" href="identify-jd.php">Identify Job Description</a></li>
+                            <li><a class="dropdown-item" href="update-jd.php">Update Job Description</a></li>
+                            <li><a class="dropdown-item" href="new-job.php">Create New Job</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -55,7 +58,7 @@
     </nav>
     <h1 style="font-family:'Exo 2'; text-align: center;" style="margin-bottom: 85px;">Employee Records</h1>
     <div class="container mt-4" style="margin-bottom: 6%;">
-        <table class="table table-dark table-bordered table-striped table-hover">
+        <table id="employeeData" class="table table-dark table-bordered table-striped table-hover">
             <thead class="table-primary table-dark">
                 <tr>
                     <th>employee_id</th>
@@ -64,55 +67,85 @@
                     <th>email</th>
                     <th>phone_number</th>
                     <th>hire_date</th>
-                    <th>salary</th>
-                    <th>department_id</th>
                     <th>job_id</th>
-                    <th>job_title</th>
+                    <th>salary</th>
+                    <th>manager_id</th>
+                    <th>department_id</th>
                 </tr>
             </thead>
             <tbody>
                 <!--Add as many rows here as needed (THIS WILL BE DONE DYNAMICALLY VIA PHP)-->
-                <tr>
-                    <td>1</td>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>john.doe@example.com</td>
-                    <td>4161234567</td>
-                    <td>2023-07-23</td>
-                    <td>85000</td>
-                    <td>30</td>
-                    <td>IT_ANA</td>
-                    <td>Technology Analyst</td>
-                </tr>
+                <?php
+                  $stid = oci_parse($conn, 'SELECT employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, manager_id, department_id FROM hr_employees');
+                  oci_execute($stid);
+                  while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                    echo "<tr>";
+                    echo "<td>" . $row['EMPLOYEE_ID'] . "</td>";
+                    echo "<td>" . $row['FIRST_NAME'] . "</td>";
+                    echo "<td>" . $row['LAST_NAME'] . "</td>";
+                    echo "<td contenteditable='true' name='email' empid='" . $row['EMPLOYEE_ID'] . "'>" . $row['EMAIL'] . "</td>";
+                    echo "<td contenteditable='true' name='phone' empid='" . $row['EMPLOYEE_ID'] . "'>" . $row['PHONE_NUMBER'] . "</td>";
+                    echo "<td>" . $row['HIRE_DATE'] . "</td>";
+                    echo "<td>" . $row['JOB_ID'] . "</td>";
+                    echo "<td contenteditable='true' name='salary' empid='" . $row['EMPLOYEE_ID'] . "'>" . $row['SALARY'] . "</td>";
+                    echo "<td>" . $row['MANAGER_ID'] . "</td>";
+                    echo "<td>" . $row['DEPARTMENT_ID'] . "</td>";
+                    /*
+                    foreach ($row as $item) {
+                      echo "<td><div contenteditable>" . $item . "</div></td>";
+                    }
+                    */
+                    echo "</tr>";
+                  }
+                ?>
             </tbody>
         </table>
     </div>
-    <form class="container mb-4">
-        <div class="col-md-12" style="margin-bottom: 30px;">
-            <label for="inputEmployeeId" class="form-label">Enter Employee ID</label>
-            <select id="inputEmployeeId" class="form-select">
-              <option selected>Choose...</option>
-              <!--MUST USE PHP To populate the options below-->
-              <option>...</option>
-            </select>
-        </div>
-        <div class="col-md-4" style="margin-bottom: 20px;">
-            <label for="inputPhone" class="form-label">Phone Number</label>
-            <input type="text" class="form-control" id="inputPhone" placeholder="1234567891">
-        </div>
-        <div class="col-md-4" style="margin-bottom: 20px;">
-            <label for="inputEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="inputEmail" placeholder="john_doe@example.com">
-        </div>
-        <div class="col-md-4" style="margin-bottom: 20px;">
-            <label for="inputSalary" class="form-label">Salary</label>
-            <input type="text" class="form-control" id="inputSalary" placeholder="85000">
-        </div>
-
+    <form class="container mb-4" id="updateEmployees">
         <div class="col-12" style="text-align: center;">
             <button type="submit" class="btn btn-outline-dark btn-lg">Update</button>
         </div>
     </form>
+    
+    <script src="jquery.min.js"></script>
+    <script>
+        $("[contenteditable=true][name=email]").blur(function (event) {
+          console.log('email')
+            $.ajax({
+              type: 'POST',
+              url: 'update_employees.php',
+              data: `email=${$(this).html()}&empid=${$(this).attr('empid')}`,
+              dataType: 'json',
+              success: function(response){
+                console.log("success");
+              }
+            });
+          });
+          $("[contenteditable=true][name=phone]").blur(function (event) {
+            console.log('phone')
+            $.ajax({
+              type: 'POST',
+              url: 'update_employees.php',
+              data: `phone=${$(this).html()}&empid=${$(this).attr('empid')}`,
+              dataType: 'json',
+              success: function(response){
+                console.log("success");
+              }
+            });
+          });
+          $("[contenteditable=true][name=salary]").blur(function (event) {
+            console.log('salary')
+            $.ajax({
+              type: 'POST',
+              url: 'update_employees.php',
+              data: `salary=${$(this).html()}&empid=${$(this).attr('empid')}`,
+              dataType: 'json',
+              success: function(response){
+                console.log("success");
+              }
+            });
+          });
+    </script>
 </body>
 <hr style="border-style: dotted none none; border-width: 6px; width: 75px; margin: 50px auto; border-color: orangered; background-color: white; opacity: 1;">
 <footer style="background-color: black; color: white; padding: 20px; text-align: center;">

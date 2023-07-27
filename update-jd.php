@@ -1,3 +1,5 @@
+<?php include 'conn.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow p-3 mb-5" style="background-color: black;">
         <div class="container-fluid">
             <!-- Navbar Brand -->
-            <a class="navbar-brand" href="index.html" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
+            <a class="navbar-brand" href="index.php" style="font-size: 24px;"><strong><span style="color: greenyellow;">H</span>uman <span style="color:greenyellow">R</span>esources Portal</strong></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -26,8 +28,8 @@
                             Employee
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="employee-hiring-form.html">Employee Hiring Form</a></li>
-                            <li><a class="dropdown-item" href="employee-records.html">Update Employee Records</a></li>
+                            <li><a class="dropdown-item" href="employee-hiring-form.php">Employee Hiring Form</a></li>
+                            <li><a class="dropdown-item" href="employee-records.php">Update Employee Records</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -35,9 +37,9 @@
                             Jobs
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="identify-jd.html">Identify Job Description</a></li>
-                            <li><a class="dropdown-item" href="update-jd.html">Update Job Description</a></li>
-                            <li><a class="dropdown-item" href="new-job.html">Create New Job</a></li>
+                            <li><a class="dropdown-item" href="identify-jd.php">Identify Job Description</a></li>
+                            <li><a class="dropdown-item" href="update-jd.php">Update Job Description</a></li>
+                            <li><a class="dropdown-item" href="new-job.php">Create New Job</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -66,41 +68,61 @@
             </thead>
             <tbody>
                 <!--Add as many rows here as needed (THIS WILL BE DONE DYNAMICALLY VIA PHP)-->
-                <tr>
-                    <td>IT_ANA</td>
-                    <td>Technology Analyst</td>
-                    <th>80000</th>
-                    <th>110000</th>
-                </tr>
+                <?php
+                  $stid = oci_parse($conn, 'SELECT job_id, job_title, min_salary, max_salary FROM hr_jobs');
+                  oci_execute($stid);
+                  while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+                    echo "<tr>";
+                    echo "<td>" . $row['JOB_ID'] . "</td>";
+                    echo "<td contenteditable='true' name='jobTitle' jobid='" . $row['JOB_ID'] . "'>" . $row['JOB_TITLE'] . "</td>";
+                    echo "<td contenteditable='true' name='minSal' jobid='" . $row['JOB_ID'] . "'>" . $row['MIN_SALARY'] . "</td>";
+                    echo "<td contenteditable='true' name='maxSal' jobid='" . $row['JOB_ID'] . "'>" . $row['MAX_SALARY'] . "</td>";
+                    echo "</tr>";
+                  }
+                ?>
             </tbody>
         </table>
     </div>
-    <form class="container mb-4">
-        <div class="col-md-12" style="margin-bottom: 30px;">
-            <label for="inputJobID" class="form-label">Enter Job ID</label>
-            <select id="inputJobID" class="form-select">
-              <option selected>Choose...</option>
-              <!--MUST USE PHP To populate the options below-->
-              <option>...</option>
-            </select>
-        </div>
-        <div class="col-md-4" style="margin-bottom: 20px;">
-            <label for="inputJobTitle" class="form-label">Job Title</label>
-            <input type="text" class="form-control" id="inputJobTitle">
-        </div>
-        <div class="col-md-4" style="margin-bottom: 20px;">
-            <label for="inputMinSalary" class="form-label">Minimum Salary</label>
-            <input type="email" class="form-control" id="inputMinSalary" placeholder="85000">
-        </div>
-        <div class="col-md-4" style="margin-bottom: 20px;">
-            <label for="inputMaxSalary" class="form-label">Maximum Salary</label>
-            <input type="text" class="form-control" id="inputMaxSalary" placeholder="85000">
-        </div>
 
-        <div class="col-12" style="text-align: center;">
-            <button type="submit" class="btn btn-outline-dark btn-lg">Update</button>
-        </div>
-    </form>
+    <script src="jquery.min.js"></script>
+    <script>
+        $("[contenteditable=true][name=jobTitle]").blur(function (event) {
+          console.log('jobTitle')
+            $.ajax({
+              type: 'POST',
+              url: 'update_job.php',
+              data: `jobTitle=${$(this).html()}&jobid=${$(this).attr('jobid')}`,
+              dataType: 'json',
+              success: function(response){
+                console.log("success");
+              }
+            });
+          });
+          $("[contenteditable=true][name=minSal]").blur(function (event) {
+            console.log('minSal')
+            $.ajax({
+              type: 'POST',
+              url: 'update_job.php',
+              data: `minSal=${$(this).html()}&jobid=${$(this).attr('jobid')}`,
+              dataType: 'json',
+              success: function(response){
+                console.log("success");
+              }
+            });
+          });
+          $("[contenteditable=true][name=maxSal]").blur(function (event) {
+            console.log('maxSal')
+            $.ajax({
+              type: 'POST',
+              url: 'update_job.php',
+              data: `maxSal=${$(this).html()}&jobid=${$(this).attr('jobid')}`,
+              dataType: 'json',
+              success: function(response){
+                console.log("success");
+              }
+            });
+          });
+    </script>
 </body>
 <hr style="border-style: dotted none none; border-width: 6px; width: 75px; margin: 50px auto; border-color: orangered; background-color: white; opacity: 1;">
 <footer style="background-color: black; color: white; padding: 20px; text-align: center;">
