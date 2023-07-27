@@ -61,22 +61,22 @@
         <table id="employeeData" class="table table-dark table-bordered table-striped table-hover">
             <thead class="table-primary table-dark">
                 <tr>
-                    <th>employee_id</th>
-                    <th>first_name</th>
-                    <th>last_name</th>
-                    <th>email</th>
-                    <th>phone_number</th>
-                    <th>hire_date</th>
-                    <th>job_id</th>
-                    <th>salary</th>
-                    <th>manager_id</th>
-                    <th>department_id</th>
+                    <th>Employee ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Date of Hiring</th>
+                    <th>Job ID</th>
+                    <th>Salary</th>
+                    <th>Manager ID</th>
+                    <th>Department ID</th>
                 </tr>
             </thead>
             <tbody>
                 <!--Add as many rows here as needed (THIS WILL BE DONE DYNAMICALLY VIA PHP)-->
                 <?php
-                  $stid = oci_parse($conn, 'SELECT employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, manager_id, department_id FROM hr_employees');
+                  $stid = oci_parse($conn, 'SELECT employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, manager_id, department_id FROM hr_employees ORDER BY employee_id DESC');
                   oci_execute($stid);
                   while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
                     echo "<tr>";

@@ -60,16 +60,16 @@
         <table class="table table-dark table-bordered table-striped table-hover">
             <thead class="table-primary table-dark">
                 <tr>
-                    <th>job_id</th>
-                    <th>job_title</th>
-                    <th>min_salary</th>
-                    <th>max_salary</th>
+                    <th>Job ID</th>
+                    <th>Job Title</th>
+                    <th>Minimum Salary</th>
+                    <th>Maximum Salary</th>
                 </tr>
             </thead>
             <tbody>
                 <!--Add as many rows here as needed (THIS WILL BE DONE DYNAMICALLY VIA PHP)-->
                 <?php
-                  $stid = oci_parse($conn, 'SELECT job_id, job_title, min_salary, max_salary FROM hr_jobs');
+                  $stid = oci_parse($conn, 'SELECT job_id, job_title, min_salary, max_salary FROM hr_jobs ORDER BY job_id');
                   oci_execute($stid);
                   while ($row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
                     echo "<tr>";

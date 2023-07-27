@@ -5,9 +5,6 @@ if (!$conn) {
     $msg = oci_error();
     echo $msg['message'], "\n";
     exit;
-} else {
-    print "Successfully connected to Oracle database.\n";
 }
 
-//oci_close($conn);
 ?>
