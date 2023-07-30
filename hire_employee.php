@@ -24,7 +24,10 @@
   oci_bind_by_name($stid, ":date", $date);
   oci_bind_by_name($stid, ":salary", $salary);
 
-  oci_execute($stid);
+  if (!oci_execute($stid)) {
+    http_response_code(400);
+    echo oci_error($stid)['message'];
+  }
 
   oci_close($conn);
 ?>
