@@ -12,3 +12,7 @@ Built with: Ryerson SCS Oracle DB, Nginx, PHP (with OCI8), HTML, CSS, JavaScript
 2. Update `conn.php` with your SCS Oracle DB login/access credentials
 3. Serve the files on your PHP server with OCI8 installed
 4. Remember to have your SCS VPN enabled to access the database successfully
+
+##### Note
+
+- We updated our webpage after our presentation to include alert responses on the success or failure of an UPDATE or INSERT command
