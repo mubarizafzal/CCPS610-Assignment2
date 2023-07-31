@@ -13,7 +13,10 @@
   oci_bind_by_name($stid, ":minSal", $minSal);
   oci_bind_by_name($stid, ":maxSal", $maxSal);
 
-  oci_execute($stid);
+  if (!oci_execute($stid)) {
+    http_response_code(400);
+    echo oci_error($stid)['message'];
+  }
 
   oci_close($conn);
 ?>

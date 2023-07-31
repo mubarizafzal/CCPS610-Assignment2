@@ -9,7 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@200&family=Lato&family=Montserrat:wght@300&family=Raleway:wght@100&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/dd15113c98.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="favicon_io/site.webmanifest">
+
     <title>Employee Records</title>
 </head>
 <body>
@@ -56,6 +60,14 @@
             </div>
         </div>
     </nav>
+    <div class="alert alert-success" id="successAlert" role="alert" style="display: none;">
+        Record succeessfully edited.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="alert alert-danger" role="alert" id="errorAlert" style="display: none;">
+    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#ff0000}</style><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+         <b>Error!</b>
+    </div>
     <h1 style="font-family:'Exo 2'; text-align: center;" style="margin-bottom: 85px;">Employee Records</h1>
     <div class="container mt-4" style="margin-bottom: 6%;">
         <table id="employeeData" class="table table-dark table-bordered table-striped table-hover">
@@ -90,11 +102,6 @@
                     echo "<td contenteditable='true' name='salary' empid='" . $row['EMPLOYEE_ID'] . "'>" . $row['SALARY'] . "</td>";
                     echo "<td>" . $row['MANAGER_ID'] . "</td>";
                     echo "<td>" . $row['DEPARTMENT_ID'] . "</td>";
-                    /*
-                    foreach ($row as $item) {
-                      echo "<td><div contenteditable>" . $item . "</div></td>";
-                    }
-                    */
                     echo "</tr>";
                   }
                 ?>
@@ -110,41 +117,79 @@
     <script src="jquery.min.js"></script>
     <script>
         $("[contenteditable=true][name=email]").blur(function (event) {
-          console.log('email')
-            $.ajax({
-              type: 'POST',
-              url: 'update_employees.php',
-              data: `email=${$(this).html()}&empid=${$(this).attr('empid')}`,
-              dataType: 'json',
-              success: function(response){
-                console.log("success");
-              }
-            });
+          const successAlert = $('#successAlert');
+          const errorAlert = $('#errorAlert');
+          const previousErrorResponse = $('#errorReponseText');
+          // Reset alert
+          successAlert.hide();
+          errorAlert.hide();
+          previousErrorResponse.remove();
+
+          $.ajax({
+            type: 'POST',
+            url: 'update_employees.php',
+            data: `email=${$(this).html()}&empid=${$(this).attr('empid')}`,
+            success: function(response){
+              console.log("success");
+              successAlert.show();
+            },
+            error: function(response){
+              console.log("failed");
+              errorAlert.append("<div id='errorReponseText'>" + response.responseText + "</div>");
+              errorAlert.show();
+            }
           });
-          $("[contenteditable=true][name=phone]").blur(function (event) {
-            console.log('phone')
-            $.ajax({
-              type: 'POST',
-              url: 'update_employees.php',
-              data: `phone=${$(this).html()}&empid=${$(this).attr('empid')}`,
-              dataType: 'json',
-              success: function(response){
-                console.log("success");
-              }
-            });
+        });
+
+        $("[contenteditable=true][name=phone]").blur(function (event) {
+          const successAlert = $('#successAlert');
+          const errorAlert = $('#errorAlert');
+          const previousErrorResponse = $('#errorReponseText');
+          // Reset alert
+          successAlert.hide();
+          errorAlert.hide();
+          previousErrorResponse.remove();
+
+          $.ajax({
+            type: 'POST',
+            url: 'update_employees.php',
+            data: `phone=${$(this).html()}&empid=${$(this).attr('empid')}`,
+            success: function(response){
+              console.log("success");
+              successAlert.show();
+            },
+            error: function(response){
+              console.log("failed");
+              errorAlert.append("<div id='errorReponseText'>" + response.responseText + "</div>");
+              errorAlert.show();
+            }
           });
-          $("[contenteditable=true][name=salary]").blur(function (event) {
-            console.log('salary')
-            $.ajax({
-              type: 'POST',
-              url: 'update_employees.php',
-              data: `salary=${$(this).html()}&empid=${$(this).attr('empid')}`,
-              dataType: 'json',
-              success: function(response){
-                console.log("success");
-              }
-            });
+        });
+
+        $("[contenteditable=true][name=salary]").blur(function (event) {
+          const successAlert = $('#successAlert');
+          const errorAlert = $('#errorAlert');
+          const previousErrorResponse = $('#errorReponseText');
+          // Reset alert
+          successAlert.hide();
+          errorAlert.hide();
+          previousErrorResponse.remove();
+
+          $.ajax({
+            type: 'POST',
+            url: 'update_employees.php',
+            data: `salary=${$(this).html()}&empid=${$(this).attr('empid')}`,
+            success: function(response){
+              console.log("success");
+              successAlert.show();
+            },
+            error: function(response){
+              console.log("failed");
+              errorAlert.append("<div id='errorReponseText'>" + response.responseText + "</div>");
+              errorAlert.show();
+            }
           });
+        });
     </script>
 </body>
 <hr style="border-style: dotted none none; border-width: 6px; width: 75px; margin: 50px auto; border-color: orangered; background-color: white; opacity: 1;">
